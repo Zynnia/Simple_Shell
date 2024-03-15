@@ -1,34 +1,34 @@
 #ifndef SHELLMEMORY_H
+#include<memory>
 
 class Node {
 public:
     std::string name;
     std::string value;
-    Node *next;
+    std::shared_ptr<Node> next;
 
     Node(std::string &_name, std::string &_value) : name(_name), value(_value), next(nullptr) {}
 };
 
 class ListNode {
 private:
-    Node *head;
+    std::shared_ptr<Node> head;
 public:
 
     ListNode(): head(nullptr) {}
 
     void add(std::string &name, std::string &val) {
         if (head == nullptr) {
-            head = new Node(name, val);
+            head = std::make_shared<Node>(Node(name, val));
             return;
         } else {
-            Node *temp = head;
+            std::shared_ptr<Node> temp = head;
             while (temp != nullptr) {
                 if (temp->name == name) {
                     temp->value = val;
                     break;
                 } else if (temp->next == nullptr) {
-                    Node *newNode = new Node(name, val);
-                    temp->next = newNode;
+                    temp->next = std::make_shared<Node>(Node(name, val));
                     break;
                 }
                 temp = temp->next;
@@ -37,7 +37,7 @@ public:
     }
 
     void printVariable(const std::string &var) {
-        Node *temp = head;
+        std::shared_ptr<Node> temp = head;
         while (temp != nullptr) {
             if (temp->name == var) {
                 std::cout << temp->value << std::endl;
@@ -49,7 +49,7 @@ public:
     }
 
     void printList() {
-        Node *temp = head;
+        std::shared_ptr<Node> temp = head;
         while (temp != nullptr) {
             std::cout << temp->name << " " << temp->value << std::endl;
             temp = temp->next;
