@@ -8,9 +8,11 @@
 
 void addToReady(PCB p);
 
-void myInit(std::vector<std::string>& instructions) {
-    for (int i = 1; i < instructions.size(); ++i) {
+void myInit(std::vector<std::string> &instructions) {
+    for (int i = 0; i < instructions.size(); ++i) {
+        //We want to pass the argument was a FILE* pointer to the ram
         std::shared_ptr<std::ifstream> program = std::make_shared<std::ifstream>(std::ifstream (instructions[i]));
+
         addToRam(program);
         //auto gg = makePCB(instructions[i]);
     }

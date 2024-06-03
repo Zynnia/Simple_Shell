@@ -61,7 +61,7 @@ void run(std::string &fileLocation, bool &signal) {
     testScript.close();
 }
 
-void exec(const std::vector<std::string>& argu, bool &signal) {
+void exec(const std::vector<std::string> &argu, bool &signal) {
     //Here exec will call the run function
     //probably best to pass in the array then have it call
     //run in a loop
@@ -69,8 +69,8 @@ void exec(const std::vector<std::string>& argu, bool &signal) {
     //need to check for valid file extension and if the program has already ran
     //check if the last 4 characters are a .txt
     const size_t len = argu.size();
+    std::vector<std::string> p;
     for (int i = 1; i < len; ++i) {
-        //std::cout << x << std::endl;
         std::string ext;
         size_t lenWord = argu[i].size();
         for (int j = 0; j < 4; ++j) {
@@ -79,10 +79,11 @@ void exec(const std::vector<std::string>& argu, bool &signal) {
         if (ext != "txt.") {
             std::cout << "Invalid file extension" << std::endl;
             signal = false;
+        } else {
+            p.push_back(argu[i]);
         }
-        std::cout << ext << std::endl;
+        std::cout << ext << std::endl; //testing purposes
     }
-    std::vector<std::string> p;
     myInit(p);
 }
 

@@ -1,0 +1,5 @@
+# ninja log v5
+1	629	1715609763144498447	CMakeFiles/Simple_Shell.dir/shell.cpp.o	c33bff6e0c686de1
+2	700	1715610953386376459	CMakeFiles/Simple_Shell.dir/kernel.cpp.o	dfc40923f0b22b6c
+700	774	1715610953462381349	Simple_Shell	bd6b770baa860cf5
+1	21	1715611111815044183	build.ninja	18eee28cd3643880
