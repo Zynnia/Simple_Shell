@@ -1,3 +1,0 @@
-/home/brian/Projects/Simple_Shell/cmake-build-debug/CMakeFiles/Simple_Shell.dir
-/home/brian/Projects/Simple_Shell/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/brian/Projects/Simple_Shell/cmake-build-debug/CMakeFiles/rebuild_cache.dir
