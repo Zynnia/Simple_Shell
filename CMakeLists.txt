@@ -6,11 +6,14 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(Simple_Shell
-        cpu.h
         interpreter.h
+        pcb.h
         kernel.cpp
         kernel.h
-        pcb.h
         ram.h
         shell.h
-        shellmemory.h)
+        shellmemory.h
+        interpreter.cpp
+        shell.cpp
+        cpu.h
+)
