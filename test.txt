@@ -1,8 +1,0 @@
-help
-set abc 1
-set pp 234
-print pp
-print abc
-set pp Jaaaa
-print pp
-quit
