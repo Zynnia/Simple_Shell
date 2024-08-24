@@ -27,11 +27,14 @@ public:
     void printList() override; //test function
 };
 
+//stores the variable and its arguments
 void ListNode::add(std::string &name, std::string &val) {
+    //If list is empty then add to first node
     if (head == nullptr) {
         head = std::make_shared<Node>(Node(name, val));
         return;
     }
+    //Look for a non-empty slot and add
     std::shared_ptr<Node> temp = head;
     while (temp != nullptr) {
         if (temp->name == name) {
@@ -44,6 +47,8 @@ void ListNode::add(std::string &name, std::string &val) {
         temp = temp->next;
     }
 }
+//Search through shellmemory for the value var
+//output if found else display message
 void ListNode::printVariable(const std::string &var) {
     std::shared_ptr<Node> temp = head;
     while (temp != nullptr) {
@@ -55,6 +60,7 @@ void ListNode::printVariable(const std::string &var) {
     }
     std::cout << "Variable does not exist" << std::endl;
 }
+//Print the list of commands, used for testing purposes
 void ListNode::printList() {
     std::shared_ptr<Node> temp = head;
     while (temp != nullptr) {

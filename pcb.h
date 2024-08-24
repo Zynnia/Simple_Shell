@@ -1,41 +1,71 @@
 #ifndef PCB_H
 #define PCB_H
-#include <istream>
-#include <sstream>
+#include <memory>
 
+//TODO: RAM will always point to the front of the file where as the pcb will keep track.
+//      Then on initialization the pcb will copy the file pointer from the ram
+//      CPU and the PCB will share the same file pointer
 class PCB {
 public:
-    std::shared_ptr<std::ifstream> pc; //our file pointer - program counter
-    explicit PCB(std::shared_ptr<std::ifstream> p) : pc(std::move(p)) {};
+    std::shared_ptr<std::ifstream> pc; // our file pointer
+    std::shared_ptr<PCB> next;
+    PCB(std::shared_ptr<std::ifstream> p) : pc(p), next(nullptr) {};
 };
 
-class ReadyQueue : public List {
+class ReadyQueue {
 private:
     std::shared_ptr<PCB> head; //points to the beginning of the queue
-    std::shared_ptr<PCB> tail; //points to the tail of the queue
 public:
-    ReadyQueue(): head(nullptr), tail(nullptr) {}
-    void add(std::string &name, std::string &val) override;
-    void printVariable(const std::string &var) override;
-    void printList() override;
+    ReadyQueue(): head(nullptr) {}
+    void addToReady(PCB pcb);
+    std::shared_ptr<std::ifstream> instruction() {
+        //Pass ownership to the dummy variable
+        auto dummy = std::move(head->pc);
+        head = head->next;
+        return dummy;
+    }
+    void updatePCB(std::shared_ptr<std::ifstream> ip);
+    bool isEmpty() const;
+    void test();
 };
 
-void ReadyQueue::add(std::string &name, std::string &val) {
-
+//Add the pcb to our ready queue
+void ReadyQueue::addToReady(PCB pcb) {
+    if (head == nullptr) {
+        head = std::make_shared<PCB>(pcb);
+    } else {
+        auto dummy = head;
+        while (dummy->next != nullptr) {
+            dummy = dummy->next;
+        }
+        dummy->next = std::make_shared<PCB>(pcb);
+    }
 }
 
-void ReadyQueue::printVariable(const std::string &var) {
-
+inline void ReadyQueue::updatePCB(std::shared_ptr<std::ifstream> ip) {
+    //Make a new pcb
+    PCB pcb(ip);
+    //Add it to the end of the queue
+    addToReady(pcb);
 }
 
-void ReadyQueue::printList() {
-
+//check to see if the Ready Queue is empty
+inline bool ReadyQueue::isEmpty() const {
+    return (head == nullptr);
 }
 
-PCB makePCB(std::shared_ptr<std::ifstream> &p) {
-    PCB pp(p);
-    return pp;
+//Tester to see if things are added correctly
+inline void ReadyQueue::test() {
+    auto dummy = head;
+    size_t i = 0;
+    while (dummy != nullptr) {
+        i++;
+        dummy = dummy->next;
+    }
+    std::cout << "The number of entry is " << i << std::endl;
 }
+
+extern ReadyQueue queue;
 
 
 #endif

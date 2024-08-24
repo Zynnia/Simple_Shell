@@ -1,15 +1,6 @@
 #ifndef SHELL_H
-#include "interpreter.h"
+#define SHELL_H
 
-void parse() {
-    std::string input;
-    bool signal = true;
-    while (signal) {
-        getline(std::cin, input);
-        if (!input.empty()) {
-            interpreter(input, signal);
-        }
-    }
-}
+void parse();
 
 #endif
