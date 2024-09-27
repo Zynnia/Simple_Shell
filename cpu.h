@@ -6,8 +6,6 @@
 #include "interpreter.h"
 #include "pcb.h"
 
-
-
 class CPU {
 private:
     std::ifstream ip; //instruction pointer
@@ -20,7 +18,9 @@ public:
 void CPU::run(std::shared_ptr<std::ifstream> &_ip) {
     std::string line;
     bool signal = true;
-    int num = 0;
+    int num = 1;
+
+    //Grab the instruction line and execute it
     while (getline(*_ip, line)) {
         ir = line;
         interpreter(ir, signal);
@@ -30,11 +30,8 @@ void CPU::run(std::shared_ptr<std::ifstream> &_ip) {
     //If eof then close the file otherwise update the ready queue
     if (_ip->eof()) {
         _ip->close();
-        //For testing purposes
-        std::cout << "We reach the end of the file" << std::endl;
-
     } else {
-        //Here we need to get the information to return it back to the ready queue.
+        //Return the current instruction back to the ready queue
         queue.updatePCB(_ip);
     }
 }

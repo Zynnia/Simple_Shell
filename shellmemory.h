@@ -69,4 +69,6 @@ void ListNode::printList() {
     }
 }
 
+extern ListNode shellMemory;
+
 #endif

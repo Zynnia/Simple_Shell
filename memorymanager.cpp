@@ -3,6 +3,7 @@
 #include <fstream>
 #include "memorymanager.h"
 #include "kernel.h"
+#include "ram.h"
 
 int launcher(std::vector<std::string> &files ) {
     //Programs used to store the BackingStore Files
@@ -35,20 +36,48 @@ int launcher(std::vector<std::string> &files ) {
     return 0;
 }
 
-int countTotalPages(std::shared_ptr<std::ifstream> p) {
+int countTotalPages(std::shared_ptr<std::ifstream> &p) {
     int number = 0;
     std::string line;
     while (getline(*p, line)) {
         number++;
     }
+    //reset the file pointer back to the beginning
+    p->clear();
+    p->seekg(0,std::ios::beg);
     //Every 4 lines is 1 page, if number isnt cleanly divisible by 4 then
     // divide and add 1.
     return (number % 4 == 0) ? (number / 4) : ((number / 4) + 1);
 }
 
-void findPage(std::shared_ptr<std::ifstream> p, int pageNumber) {
+void findPage(std::shared_ptr<std::ifstream> &p, int pageNumber) {
+    //set the file pointer to the beginning
+    p->seekg(0, std::ios::beg);
+    int i = 1;
 
+    //iterate through the files till we get the desired page
+    std::string dummy;
+    while (getline(*p,dummy)) {
+        i++;
+        if (i == pageNumber * 4) {
+            break;
+        }
+    }
 }
+
+//Return array index if not null else return -1
+int findFrame(std::shared_ptr<std::ifstream> p) {
+    //Look for the first non null entry in ram
+    int i = 0;
+    for (const auto &x : ram) {
+        if (x != nullptr) {
+            return i;
+        }
+        i++;
+    }
+    return -1;
+}
+
 
 
 

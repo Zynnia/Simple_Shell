@@ -1,6 +1,7 @@
 #ifndef PCB_H
 #define PCB_H
 #include <memory>
+#include <vector>
 
 //TODO: RAM will always point to the front of the file where as the pcb will keep track.
 //      Then on initialization the pcb will copy the file pointer from the ram
@@ -9,7 +10,13 @@ class PCB {
 public:
     std::shared_ptr<std::ifstream> pc; // our file pointer
     std::shared_ptr<PCB> next;
-    PCB(std::shared_ptr<std::ifstream> p) : pc(p), next(nullptr) {};
+    std::vector<int> pageTable;
+    int pcPage;
+    int pcOffset;
+    int pagesMax; //this is the total Number of Pages we have
+    PCB(std::shared_ptr<std::ifstream> p, int _pagesMax) : pc(p), pagesMax(_pagesMax), next(nullptr), pageTable(10, -1) {};
+
+    //PCB(std::shared_ptr<std::ifstream> p) : pc(p), next(nullptr) {};
 };
 
 class ReadyQueue {
@@ -19,12 +26,11 @@ public:
     ReadyQueue(): head(nullptr) {}
     void addToReady(PCB pcb);
     std::shared_ptr<std::ifstream> instruction() {
-        //Pass ownership to the dummy variable
         auto dummy = std::move(head->pc);
         head = head->next;
         return dummy;
     }
-    void updatePCB(std::shared_ptr<std::ifstream> ip);
+    void updatePCB(std::shared_ptr<std::ifstream> ip, int _pageMax);
     bool isEmpty() const;
     void test();
 };
@@ -42,9 +48,9 @@ void ReadyQueue::addToReady(PCB pcb) {
     }
 }
 
-inline void ReadyQueue::updatePCB(std::shared_ptr<std::ifstream> ip) {
+inline void ReadyQueue::updatePCB(std::shared_ptr<std::ifstream> ip, int _pageMax) {
     //Make a new pcb
-    PCB pcb(ip);
+    PCB pcb(std::move(ip), _pageMax);
     //Add it to the end of the queue
     addToReady(pcb);
 }

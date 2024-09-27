@@ -6,6 +6,7 @@
 #include "shellmemory.h"
 #include "interpreter.h"
 #include "kernel.h"
+#include "memorymanager.h"
 
 ListNode shellMemory;
 void help() {
@@ -83,7 +84,8 @@ void exec(const std::vector<std::string> &argu, bool &signal) {
         }
         std::cout << ext << std::endl; //testing purposes
     }
-    myInit(p);
+    launcher(p);
+    //myInit(p);
 }
 
 void interpreter(const std::string &command, bool &signal) {
