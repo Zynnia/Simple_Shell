@@ -7,9 +7,11 @@
 #include "ram.h"
 #include "cpu.h"
 #include "pcb.h"
+#include "memorymanager.h"
 
 ReadyQueue queue;
 CPU cpu;
+std::vector<std::shared_ptr<std::ifstream>> ram(10, nullptr);
 
 void scheduler();
 void boot();
@@ -24,10 +26,13 @@ void myInit(std::vector<std::string> &instructions) {
         addToRam(program);
 
         //create a pcb with the file pointer
-        PCB pcb(program);
+        //So we want to add in the the total number of page count
+        const int pageMax = countTotalPages(program);
+        PCB pcb(program, pageMax);
 
         //add to the ready queue
         queue.addToReady(pcb);
+
     }
     scheduler();
 }
@@ -62,7 +67,7 @@ int main() {
     boot();
     std::cout << "Welcome to the C++ Shell\n";
     std::cout << "Version 1.1 Updated August 2024\n";
-    std::cout << "Type 'help' to see an overview of available commands\n";
+    std::cout << "Type 'help' to see an overview of available commands" << std::endl;
     parse();
 
     return 0;
