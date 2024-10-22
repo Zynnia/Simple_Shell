@@ -50,7 +50,7 @@ int countTotalPages(std::shared_ptr<std::ifstream> &p) {
     return (number % 4 == 0) ? (number / 4) : ((number / 4) + 1);
 }
 
-void findPage(std::shared_ptr<std::ifstream> &p, int pageNumber) {
+void findPage(std::shared_ptr<std::ifstream> &p, const int pageNumber) {
     //set the file pointer to the beginning
     p->seekg(0, std::ios::beg);
     int i = 1;

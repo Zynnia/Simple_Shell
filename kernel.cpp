@@ -40,6 +40,7 @@ void myInit(std::vector<std::string> &instructions) {
 //once the turn is up we pop it and move it to the back.
 //So to do this we pop the head then pass it to the cpu
 //then once the two quantas is up we pass it to the ready queue.
+//I think the pageOffset is not neccessar due too the fact the it is kept track by the ifstream
 void scheduler() {
     while (!queue.isEmpty()) {
         auto ins = queue.instruction();
@@ -66,7 +67,7 @@ void boot() {
 int main() {
     boot();
     std::cout << "Welcome to the C++ Shell\n";
-    std::cout << "Version 1.1 Updated August 2024\n";
+    std::cout << "Version 1.2 Updated October 2024\n";
     std::cout << "Type 'help' to see an overview of available commands" << std::endl;
     parse();
 

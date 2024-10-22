@@ -8,31 +8,33 @@
 
 class CPU {
 private:
-    std::ifstream ip; //instruction pointer
+    std::shared_ptr<std::ifstream> ip; //instruction pointer
     std::string ir; //instruction register
     const int quanta{2}; //quanta field
 public:
-    void run(std::shared_ptr<std::ifstream> &_ip);
+    void run(const PCB& p);//std::shared_ptr<std::ifstream> &_ip);
 };
 
-void CPU::run(std::shared_ptr<std::ifstream> &_ip) {
+void CPU::run(const PCB& p){//std::shared_ptr<std::ifstream> &_ip) {
     std::string line;
     bool signal = true;
     int num = 1;
+    ip = p.pc;
 
     //Grab the instruction line and execute it
-    while (getline(*_ip, line)) {
+
+    while (getline(*ip, line)) {
         ir = line;
         interpreter(ir, signal);
         num++;
         if (num > quanta) break;
     }
     //If eof then close the file otherwise update the ready queue
-    if (_ip->eof()) {
-        _ip->close();
+    if (ip->eof()) {
+        ip->close();
     } else {
         //Return the current instruction back to the ready queue
-        queue.updatePCB(_ip);
+        queue.updatePCB(ip, p.pagesMax);
     }
 }
 
